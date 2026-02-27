@@ -1,13 +1,24 @@
-<html xmlns:th="http://www.thymeleaf.org">
-	<body>
-		<form method="post"th:object="${product}" th:action="@{/add}">
-			<p>Ko grib?</p>
-		<input type="text" th:field="*{title}"/>
-		<input type="text" th:field="*{price}"/>
-		<input type="text" th:field="*{category}"/>
-		<input type="text" th:field="*{description}"/>
-		<input type="text" th:field="*{quantity}"/>
-		<button type = "submit">Lūdzu!</button>
-		</form>
-	</body>
-<html>
+<html xmlns:th="http:<html xmlns:th="http://www.thymeleaf.org" >
+<body>
+<h1>Lūdzu ievadi jaunu produktu:</h1>
+	<form method="post" th:object="${product}" th:action="@{/add}"  >
+		
+		<p>Ievadi nosaukumu</p>
+		<input type="text" th:field="*{title}"/> 
+		<p>Ievadi cenu</p>
+		<input type="text" th:field="*{price}"/> 
+		<p>Ievadi kategoriju</p>
+		<select class="form-control" id="dropDownList">
+		    <option value="0">Izvēlies kategoriju:</option>
+		    <option th:each="category : ${categories}" th:value="${category}" th:text="${category}" th:field="*{category}"></option>
+		</select>
+		<p>Ievadi aprakstu</p>
+		<input type="text" th:field="*{description}"/> 
+		<p>Ievadi daudzumu</p>
+		<input type="text" th:field="*{quantity}"/> 
+		
+		<button type="submit" >Saglabāt produktu</button>		
+	</form>	
+	
+</body>
+</html>
