@@ -99,7 +99,8 @@ public class SimpleController {
 	@PostMapping("/add")
 	public String postAddProduct(Product product) {
 		System.out.print(product);
-		allProducts.add(product);
+		Product newProduct = new Product(product.getTitle(), product.getPrice(),product.getDescription(),product.getCategory(),product.getQuantity());
+		allProducts.add(newProduct);
 		return "redirect:/getallproducts";
 	}
 }

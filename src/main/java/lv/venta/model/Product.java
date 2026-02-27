@@ -60,12 +60,12 @@ public class Product {
 	}
 
 	public Product() {
-		setId();
+		/*setId();
 		setTitle("Riepu");
 		setPrice(6.99f);
 		setDescription("Laba");
 		setCategory(Category.other);
-		setQuantity(4);
+		setQuantity(4);*/
 	}
 
 	public Product(String inputTitle, float inputPrice, String inputDescription, Category inputCategory,
