@@ -7,16 +7,16 @@ public class Product {
 	private Category category;
 	private String description;
 	private int quantity;
-	
-	private static int counter = 0;
+	private static int counter = 1;
 
 	public int getId() {
-		counter++;
 		return id;
 	}
 
 	public void setId() {
-		this.id = id;
+		this.id = counter;
+		counter++;
+
 	}
 
 	public float getPrice() {
@@ -58,7 +58,8 @@ public class Product {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-	public Product(){
+
+	public Product() {
 		setId();
 		setTitle("Riepu");
 		setPrice(6.99f);
@@ -66,7 +67,9 @@ public class Product {
 		setCategory(Category.other);
 		setQuantity(4);
 	}
-	public Product(String inputTitle, float inputPrice, String inputDescription, Category inputCategory, int inputQuality) {
+
+	public Product(String inputTitle, float inputPrice, String inputDescription, Category inputCategory,
+			int inputQuality) {
 		setId();
 		setTitle(inputTitle);
 		setPrice(inputPrice);
@@ -74,6 +77,7 @@ public class Product {
 		setCategory(inputCategory);
 		setQuantity(inputQuality);
 	}
+
 	public String toString() {
 		return id + ": " + title + ", " + price + " Eur, " + description + ", " + category + ", " + quantity;
 	}

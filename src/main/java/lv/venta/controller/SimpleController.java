@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import lv.venta.model.Category;
 import lv.venta.model.Product;
@@ -51,6 +52,21 @@ public class SimpleController {
 
 	@GetMapping("/getallproducts/{id}")
 	public String getGetAllProductsById(@PathVariable(name = "id") int id, Model model) {
+		if (id < 0) {
+			model.addAttribute("package", "nebuus");
+			return "error-page";
+		}
+		for (Product tempP : allProducts) {
+			if (tempP.getId() == id) {
+				model.addAttribute("pacakge", tempP);
+				return "show-one-product";
+			}
+		}
+		model.addAttribute("package","Produkts nava");
+		return "error-page";
+	}
+	@GetMapping("/allproducts")
+	public String getGetAllProducts2ById(@RequestParam(name = "id") int id, Model model) {
 		if (id < 0) {
 			model.addAttribute("package", "nebuus");
 			return "error-page";
