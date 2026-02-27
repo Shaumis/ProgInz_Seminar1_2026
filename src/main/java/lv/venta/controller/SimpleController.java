@@ -93,6 +93,7 @@ public class SimpleController {
 	@GetMapping("/add")
 	public String getAddProduct(Model model) {
 		model.addAttribute("product", new Product());
+		model.addAttribute("categories",Category.values());
 		return "add-one-product";
 	}
 
@@ -101,6 +102,34 @@ public class SimpleController {
 		System.out.print(product);
 		Product newProduct = new Product(product.getTitle(), product.getPrice(),product.getDescription(),product.getCategory(),product.getQuantity());
 		allProducts.add(newProduct);
+		return "redirect:/getallproducts";
+	}
+	@GetMapping("/update")
+	public String getUpdateProductById(@RequestParam(name = "id")int id, Model model) {
+		if (id < 0) {
+			model.addAttribute("package", "nebuus");
+			return "error-page";
+		}
+		for(Product tempP : allProducts) {
+			if(tempP.getId()==id) {
+				model.addAttribute("product",tempP);
+				return "update-one-product";
+			}
+		}
+		model.addAttribute("package","nuuuh");
+		return "error-page";
+	}
+	@PostMapping("/update")
+	public String postUpdateProductById(@RequestParam(name = "id")int id, Product product) {
+		for(Product tempP : allProducts) {
+			if(tempP.getId()==id) {
+				tempP.setTitle(product.getTitle());
+				tempP.setDescription(product.getDescription());
+				tempP.setPrice(product.getPrice());
+				tempP.setCategory(product.getCategory());
+				tempP.setQuantity(product.getQuantity());
+			}
+		}
 		return "redirect:/getallproducts";
 	}
 }
