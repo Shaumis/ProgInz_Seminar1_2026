@@ -8,18 +8,26 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import lv.venta.ProgInzSeminar1Application;
 import lv.venta.model.Category;
 import lv.venta.model.Product;
 
 @Controller
 public class SimpleController {
 
+	private final ProgInzSeminar1Application progInzSeminar1Application;
+
 	ArrayList<Product> allProducts = new ArrayList<>(
 			Arrays.asList(new Product("Wafele", 100f, "Mēma", Category.other, 19000),
 					new Product("Suns", 920.22f, "Labs", Category.other, 1),
 					new Product("Āmurs", 22f, "Sit ok", Category.other, 4)));
+
+	SimpleController(ProgInzSeminar1Application progInzSeminar1Application) {
+		this.progInzSeminar1Application = progInzSeminar1Application;
+	}
 
 	@GetMapping("/showmessage")
 	public String getShowMessage() {
@@ -62,9 +70,10 @@ public class SimpleController {
 				return "show-one-product";
 			}
 		}
-		model.addAttribute("package","Produkts nava");
+		model.addAttribute("package", "Produkts nava");
 		return "error-page";
 	}
+
 	@GetMapping("/allproducts")
 	public String getGetAllProducts2ById(@RequestParam(name = "id") int id, Model model) {
 		if (id < 0) {
@@ -77,7 +86,20 @@ public class SimpleController {
 				return "show-one-product";
 			}
 		}
-		model.addAttribute("package","Produkts nava");
+		model.addAttribute("package", "Produkts nava");
 		return "error-page";
+	}
+
+	@GetMapping("/add")
+	public String getAddProduct(Model model) {
+		model.addAttribute("product", new Product());
+		return "add-one-product";
+	}
+
+	@PostMapping("/add")
+	public String postAddProduct(Product product) {
+		System.out.print(product);
+		allProducts.add(product);
+		return "redirect:/getallproducts";
 	}
 }
