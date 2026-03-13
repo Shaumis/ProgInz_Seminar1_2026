@@ -1,4 +1,4 @@
-package lv.venta.service;
+package lv.venta.service.impl;
 
 import java.util.ArrayList;
 
