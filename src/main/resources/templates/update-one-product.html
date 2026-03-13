@@ -1,0 +1,13 @@
+<html xmlns:th="http://www.thymeleaf.org">
+	<body>
+			<p>Ko grib?</p>
+		<form method="post"th:object="${product}" th:action="@{/update/__${id}__}">
+		<input type="text" th:field="*{title}"/>
+		<input type="text" th:field="*{price}"/>
+		<input type="text" th:field="*{category}"/>
+		<input type="text" th:field="*{description}"/>
+		<input type="text" th:field="*{quantity}"/>
+		<button type = "submit">Lūdzu!</button>
+		</form>
+	</body>
+<html>

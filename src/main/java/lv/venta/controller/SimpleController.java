@@ -11,118 +11,148 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import lv.venta.ProgInzSeminar1Application;
 import lv.venta.model.Category;
 import lv.venta.model.Product;
-
+//kontrolieru klase ar endpointiem
 @Controller
 public class SimpleController {
-
-	private final ProgInzSeminar1Application progInzSeminar1Application;
-
-	ArrayList<Product> allProducts = new ArrayList<>(
-			Arrays.asList(new Product("Wafele", 100f, "Mēma", Category.other, 19000),
-					new Product("Suns", 920.22f, "Labs", Category.other, 1),
-					new Product("Āmurs", 22f, "Sit ok", Category.other, 4)));
-
-	SimpleController(ProgInzSeminar1Application progInzSeminar1Application) {
-		this.progInzSeminar1Application = progInzSeminar1Application;
-	}
-
-	@GetMapping("/showmessage")
+	
+	
+	ArrayList<Product> allProducts = new ArrayList<>(Arrays.asList(
+			new Product("Ābols", 0.99f, "Salds un garšīgs", Category.computer, 10),
+			new Product("Burkāns", 2.84f, "Oranžš", Category.medicine, 40),
+			new Product("Vīnogas", 4.99f, "Violetas", Category.other, 3)
+			)
+			);
+	
+	
+	@GetMapping("/showmessage") //localhost:8080/showmessage
 	public String getShowMessage() {
-		System.out.println("Controller ir izsaukts");
-		return "msg"; // parāda msg.html lapu
+		System.out.println("Mans pirmais kontrolieris ir izsaukts");
+		return "msg";//šī koda rinda parādāsi msg.html lapu
+		
 	}
-
-	@GetMapping("/showdata")
+	
+	@GetMapping("/showdata")//localhost:8080/showdata
 	public String getShowData(Model model) {
-		System.out.println("Controller NR.2");
+		System.out.println("Otrais kontrolieris ir izsaukts");
 		Random rand = new Random();
-		String text = "Mikusam ir " + rand.nextInt() + " dollaroos!";
+		String text = "Karina " + rand.nextInt();
 		model.addAttribute("package", text);
-		return "data";
+		return "data";//sī koda rinda parādīs data.html lapu
 	}
-
-	@GetMapping("/getproduct")
-	public String getGetProduct(Model model) {
-		System.out.println("Reku Manta");
-		Product product = new Product("Kompis", 1000f, "Kreizy", Category.computer, 10);
-		model.addAttribute("package", product);
-		return "prod";
+	
+	
+	@GetMapping("/getproduct")//localhost:8080/getproduct
+	private String getGetProduct(Model model) {
+		Product prod = new Product("Ābols", 0.99f, "Salds un garšīgs", Category.computer, 10);
+		model.addAttribute("package", prod);
+		return "show-one-product";//sī koda rinda parādīs show-one-product.html lapu
+		
 	}
-
-	@GetMapping("/getallproducts")
+	
+	
+	@GetMapping("/getallproducts")//localhost:8080/getallproducts
 	public String getGetAllProducts(Model model) {
-		model.addAttribute("package", allProducts);
-		return "showall";
+		model.addAttribute("package",allProducts);
+		return "showall";//sī koda rinda parādīs show-all-products.html lapu
 	}
-
-	@GetMapping("/getallproducts/{id}")
+	
+	@GetMapping("/getallproducts/{id}")//localhost:8080/getallproducts/1
 	public String getGetAllProductsById(@PathVariable(name = "id") int id, Model model) {
-		if (id < 0) {
-			model.addAttribute("package", "nebuus");
-			return "error-page";
+		if(id < 0) {
+			model.addAttribute("package", "Produkta id nevar būt negatīvs");
+			return "error-page";//šī koda rinda parādīs error-page.html lapu ar ziņū, ka id nevar būt negatīvs
 		}
-		for (Product tempP : allProducts) {
-			if (tempP.getId() == id) {
-				model.addAttribute("pacakge", tempP);
-				return "show-one-product";
+		
+		for(Product tempP : allProducts) {
+			if(tempP.getId()==id) {
+				model.addAttribute("package", tempP);
+				return "show-one-product";//sī koda rinda parādīs show-one-product.html lapu
 			}
 		}
-		model.addAttribute("package", "Produkts nava");
+		
+		model.addAttribute("package", "Produkts ar tādu id neeksistē");
 		return "error-page";
+		
+		
 	}
-
-	@GetMapping("/allproducts")
-	public String getGetAllProducts2ById(@RequestParam(name = "id") int id, Model model) {
-		if (id < 0) {
-			model.addAttribute("package", "nebuus");
-			return "error-page";
+	
+	@GetMapping("/allproducts")//localhost:8080/allproducts?id=1
+	public String getGetAllProducts2ById(@RequestParam(name = "id") int id, Model model)
+	{
+		if(id < 0) {
+			model.addAttribute("package", "Produkta id nevar būt negatīvs");
+			return "error-page";//šī koda rinda parādīs error-page.html lapu ar ziņū, ka id nevar būt negatīvs
 		}
-		for (Product tempP : allProducts) {
-			if (tempP.getId() == id) {
-				model.addAttribute("pacakge", tempP);
-				return "show-one-product";
+		
+		for(Product tempP : allProducts) {
+			if(tempP.getId()==id) {
+				model.addAttribute("package", tempP);
+				return "show-one-product";//sī koda rinda parādīs show-one-product.html lapu
 			}
 		}
-		model.addAttribute("package", "Produkts nava");
+		
+		model.addAttribute("package", "Produkts ar tādu id neeksistē");
 		return "error-page";
+		
+		
 	}
-
-	@GetMapping("/add")
+	
+	//iesākumā parāda lapu, kurā varēs ievadīt jaunu produktu. Līdzi lapai padodam tukšu produktu
+	@GetMapping("/add") //localhost:8080/add
 	public String getAddProduct(Model model) {
 		model.addAttribute("product", new Product());
-		model.addAttribute("categories",Category.values());
 		return "add-one-product";
 	}
-
+	
+	
+	
+	//pēc submit pogas nospiešanas html pusē, saņemam jau aizpildītu produktu
 	@PostMapping("/add")
 	public String postAddProduct(Product product) {
-		System.out.print(product);
-		Product newProduct = new Product(product.getTitle(), product.getPrice(),product.getDescription(),product.getCategory(),product.getQuantity());
+		//TODO veikt validācijas un uzstādīt id
+		System.out.println(product);
+		
+		Product newProduct = new Product(product.getTitle(), product.getPrice(), product.getDescription(),
+				product.getCategory(), product.getQuantity());
+		
 		allProducts.add(newProduct);
 		return "redirect:/getallproducts";
 	}
-	@GetMapping("/update")
-	public String getUpdateProductById(@RequestParam(name = "id")int id, Model model) {
-		if (id < 0) {
-			model.addAttribute("package", "nebuus");
-			return "error-page";
+	
+	
+	
+	//izveidot getmapping funkciju uz /update/id
+	@GetMapping("/update/{id}")//localhost:8080/update/1
+	// funkcijas deklarācija ar @PathVariable un Model
+	public String getUpdateProductById(@PathVariable(name = "id") int id, Model model)
+	{
+		// parliecinaties, ka id ir pozitīvs, ja nav, tad uz error lapu parmest
+		if(id < 0) {
+			model.addAttribute("package", "Produkta id nevar būt negatīvs");
+			return "error-page";//šī koda rinda parādīs error-page.html lapu ar ziņū, ka id nevar būt negatīvs
 		}
+		
 		for(Product tempP : allProducts) {
-			if(tempP.getId()==id) {
-				model.addAttribute("product",tempP);
+			if(tempP.getId() == id) {
+				model.addAttribute("product", tempP);
 				return "update-one-product";
 			}
 		}
-		model.addAttribute("package","nuuuh");
+		
+		model.addAttribute("package", "Produkts ar tādu id neeksistē");
 		return "error-page";
+		
 	}
-	@PostMapping("/update")
-	public String postUpdateProductById(@RequestParam(name = "id")int id, Product product) {
+	
+	//dabūsu jau redigēto produktu šajā funkcijā kā argumentu
+	@PostMapping("/update/{id}")
+	public String postUpdateProductById(@PathVariable(name = "id") int id, Product product) {
+		
 		for(Product tempP : allProducts) {
-			if(tempP.getId()==id) {
+			if(tempP.getId() == id) {
+				//TODO pārbaudīt, vai vispār ir jāmaina
 				tempP.setTitle(product.getTitle());
 				tempP.setDescription(product.getDescription());
 				tempP.setPrice(product.getPrice());
@@ -132,4 +162,33 @@ public class SimpleController {
 		}
 		return "redirect:/getallproducts";
 	}
+	
+	
+	@GetMapping("/remove/{id}")//localhost:8080/remove/1
+	public String getRemoveProductById(@PathVariable(name = "id") int id, Model model) {
+		// parliecinaties, ka id ir pozitīvs, ja nav, tad uz error lapu parmest
+		if(id < 0) {
+			model.addAttribute("package", "Produkta id nevar būt negatīvs");
+			return "error-page";//šī koda rinda parādīs error-page.html lapu ar ziņū, ka id nevar būt negatīvs
+		}
+		
+		for(Product tempP : allProducts) {
+			if(tempP.getId() == id) {
+				allProducts.remove(tempP);
+				model.addAttribute("package", allProducts);
+				return "showall";//parada lapu show-all-products.html ar visiem produktiem un izdzesatajam produktam tur neveajadzetu but
+			}
+		}
+		
+		model.addAttribute("package", "Produkts ar tādu id neeksistē");
+		return "error-page";
+		
+	}
+	
+	
+	
+	
+	
+	
+
 }
