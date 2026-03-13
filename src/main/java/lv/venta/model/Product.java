@@ -1,22 +1,33 @@
 package lv.venta.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Table(name = "ProductTable")
+@Entity
+
 public class Product {
+	@Column(name = "id")
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
+	@Column(name = "Price")
 	private float price;
+	@Column(name = "Title")
 	private String title;
+	@Column(name = "Category")
 	private Category category;
+	@Column(name = "Description")
 	private String description;
+	@Column(name = "Quantity")
 	private int quantity;
-	private static int counter = 1;
 
 	public int getId() {
 		return id;
-	}
-
-	public void setId() {
-		this.id = counter;
-		counter++;
-
 	}
 
 	public float getPrice() {
@@ -60,17 +71,10 @@ public class Product {
 	}
 
 	public Product() {
-		/*setId();
-		setTitle("Riepu");
-		setPrice(6.99f);
-		setDescription("Laba");
-		setCategory(Category.other);
-		setQuantity(4);*/
 	}
 
 	public Product(String inputTitle, float inputPrice, String inputDescription, Category inputCategory,
 			int inputQuality) {
-		setId();
 		setTitle(inputTitle);
 		setPrice(inputPrice);
 		setDescription(inputDescription);
