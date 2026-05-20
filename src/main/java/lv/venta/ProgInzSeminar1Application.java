@@ -47,8 +47,8 @@ public class ProgInzSeminar1Application {
 				System.out.println("Ierakstu skaits: " +prodRepo.count());
 				System.out.println("Produkts ar id=1: " + prodRepo.findById(1).get());
 				System.out.println("Visi produkti: " + prodRepo.findAll());
-				prodRepo.deleteById(1);
-				System.out.println("Visi produkti pec 1.dzešanas" + prodRepo.findAll());
+				//prodRepo.deleteById(1);
+				//System.out.println("Visi produkti pec 1.dzešanas" + prodRepo.findAll());
 				
 				Product productForUpdate = prodRepo.findById(2).get();
 				productForUpdate.setPrice(9.99f);

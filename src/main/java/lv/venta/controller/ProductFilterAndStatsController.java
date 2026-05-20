@@ -15,7 +15,7 @@ import lv.venta.service.IProductFilterAndStatsService;
 
 @Controller
 @RequestMapping("/product/filter")
-public class ProductFilterAndStatsService {
+public class ProductFilterAndStatsController {
 //TODO uztaisīs 4 getmapping kontrolieru funkcijas - katru savai filtracijas servisa funkcijai
 	
 	@Autowired

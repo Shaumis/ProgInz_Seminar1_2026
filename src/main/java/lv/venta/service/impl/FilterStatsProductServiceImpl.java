@@ -2,6 +2,7 @@ package lv.venta.service.impl;
 
 import java.util.ArrayList;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,44 +14,40 @@ import lv.venta.service.IProductFilterAndStatsService;
 @Service
 public class FilterStatsProductServiceImpl implements IProductFilterAndStatsService {
 
-	private final CRUDProductServiceImpl CRUDProductServiceImpl;
-
 	@Autowired
 	private IProductRepo prodRepo;
 
-	FilterStatsProductServiceImpl(CRUDProductServiceImpl CRUDProductServiceImpl) {
-		this.CRUDProductServiceImpl = CRUDProductServiceImpl;
-	}
-
 	@Override
 	public ArrayList<Product> filterByPriceLessThan(float threshold) throws Exception {
-		if (prodRepo.count() == 0) {
-			throw new Exception("Nu uh");
+		if(threshold <= 0) {
+			throw new Exception("Ievadītais cenas slieksnis nav korekts");
 		}
-		if (threshold <= 0) {
-			throw new Exception("Nebūs");
+		
+		if(prodRepo.count() == 0) {
+			throw new Exception("DB nav produktu, tāpēc neko nevar filtrēt");
 		}
-
+		
 		ArrayList<Product> filteredProducts = prodRepo.findByPriceLessThan(threshold);
-		if (filteredProducts.isEmpty()) {
-			throw new Exception("ne");
+		if(filteredProducts.isEmpty()) {
+			throw new Exception("Nav neviens produkts, kura cena ir mazāka par "+threshold+ " eur");
 		}
 		return filteredProducts;
+		
 	}
 
 	@Override
 	public ArrayList<Product> filterByCategory(Category category) throws Exception {
-		if (category == null) {
+		if(category == null) {
 			throw new Exception("Ievades dati nav korekti");
 		}
-
-		if (prodRepo.count() == 0) {
+		
+		if(prodRepo.count() == 0) {
 			throw new Exception("DB nav produktu, tāpēc neko nevar filtrēt");
 		}
-
+	
 		ArrayList<Product> filteredProducts = prodRepo.findByCategory(category);
-
-		if (filteredProducts.isEmpty()) {
+		
+		if(filteredProducts.isEmpty()) {
 			throw new Exception("Nav neviens produkts " + category + " kategorijā");
 		}
 		return filteredProducts;
@@ -58,26 +55,31 @@ public class FilterStatsProductServiceImpl implements IProductFilterAndStatsServ
 
 	@Override
 	public ArrayList<Product> filterByKeyword(String keyword) throws Exception {
-		if (keyword == null || keyword.isEmpty()) {
-			throw new Exception("Nu uh");
+		if(keyword==null || keyword.isEmpty()) {
+			throw new Exception("Ievades dati nav korekti");
 		}
-		if (prodRepo.count() == 0) {
-			throw new Exception("Nu uh");
+		
+		if(prodRepo.count() == 0) {
+			throw new Exception("DB nav produktu, tāpēc neko nevar filtrēt");
 		}
-		ArrayList<Product> filteredKeyword = prodRepo
-				.findByTitleContainingOrDescriptionContainingOrCategoryContaining(keyword, keyword, keyword);
-		if (filteredKeyword.isEmpty()) {
-			throw new Exception("lmao");
+		ArrayList<Product> filteredProducts = 
+				prodRepo.findByTitleContainingOrDescriptionContaining(keyword,keyword);
+		
+		if(filteredProducts.isEmpty()) {
+			throw new Exception("Nav neviens produkts, kura nosaukums vai apraksts satur" + keyword);
 		}
-		return filteredKeyword;
+		
+		return filteredProducts;
 	}
 
 	@Override
 	public float calculateAVGPrice() throws Exception {
-		if (prodRepo.count() == 0) {
-			throw new Exception("Nu uh");
+		if(prodRepo.count() == 0) {
+			throw new Exception("DB nav produktu, tāpēc neko nevar aprēķināt");
 		}
+		
 		float avgPrice = prodRepo.calculateAVGPriceFromDB();
+		
 		return avgPrice;
 	}
 
