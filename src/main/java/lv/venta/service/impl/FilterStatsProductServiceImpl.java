@@ -1,11 +1,11 @@
 package lv.venta.service.impl;
 
 import java.util.ArrayList;
-import java.util.Locale.Category;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lv.venta.model.Category;
 import lv.venta.model.Product;
 import lv.venta.repo.IProductRepo;
 import lv.venta.service.IProductFilterAndStatsService;
